@@ -1,4 +1,4 @@
-const { default: mongoose } = require("mongoose")
+const mongoose = require("mongoose")
 const UniqueValidator = require("mongoose-unique-validator")
 
 const userSchema = mongoose.Schema({

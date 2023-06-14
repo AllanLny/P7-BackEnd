@@ -1,10 +1,12 @@
-const express = require('expres');
+const express = require('express');
+
+const bodyParser = require('body-parser')
 const mongoose = require('mongoose');
 
 
-const UserRoutes = require('./routes/user');
+const userRoutes = require('./routes/user');
 
-mongoose.connect('mongodb+srv://User:<UserPassword1411>@cluster0-pme76.mongodb.net/test?retryWrites=true&w=majority',
+mongoose.connect('mongodb+srv://OpenClassrooms:LtHgWiIutFAkdfou@cluster0.ssq8vxo.mongodb.net/?retryWrites=true&w=majority',
     {
         useNewUrlParser: true,
         useUnifiedTopology: true
@@ -21,6 +23,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/api/auth', UserRoutes);
+app.use(bodyParser.json());
+app.use('/api/auth', userRoutes);
 
 module.exports = app;
