@@ -4,9 +4,13 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose');
 
 
-const userRoutes = require('./routes/user');
 
-mongoose.connect('mongodb+srv://OpenClassrooms:LtHgWiIutFAkdfou@cluster0.ssq8vxo.mongodb.net/?retryWrites=true&w=majority',
+const userRoutes = require('./routes/user');
+require('dotenv').config();
+const MongoDBUser = process.env.USER;
+const MongoDBPassword = process.env.PASSWORD;
+
+mongoose.connect(`mongodb+srv://${MongoDBUser}:${MongoDBPassword}@cluster0.ssq8vxo.mongodb.net/?retryWrites=true&w=majority`,
     {
         useNewUrlParser: true,
         useUnifiedTopology: true
