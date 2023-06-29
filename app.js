@@ -2,9 +2,11 @@ const express = require('express');
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose');
 const userRoutes = require('./routes/user');
+const bookRoutes = require('./routes/book');
 require('dotenv').config();
 const MongoDBUser = process.env.USER;
 const MongoDBPassword = process.env.PASSWORD;
+const path = require('path');
 
 mongoose.connect(`mongodb+srv://${MongoDBUser}:${MongoDBPassword}@cluster0.ssq8vxo.mongodb.net/?retryWrites=true&w=majority`,
     {
@@ -25,5 +27,7 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json());
 app.use('/api/auth', userRoutes);
+app.use('/api/books', bookRoutes);
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 module.exports = app;
