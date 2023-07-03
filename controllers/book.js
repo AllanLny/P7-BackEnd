@@ -12,9 +12,10 @@ exports.createBook = (req, res, next) => {
     });
 
     book.save()
-        .then(() => { res.status(201).json({ message: 'Objet enregistré !' }) })
+        .then(() => { res.status(201).json({ message: 'Livre enregistré !' }) })
         .catch(error => { res.status(400).json({ error }) })
 };
+
 
 exports.modifyBook = (req, res, next) => {
     const bookObject = req.file ? {
@@ -28,9 +29,13 @@ exports.modifyBook = (req, res, next) => {
             if (book.userId != req.auth.userId) {
                 res.status(401).json({ message: 'Not authorized' });
             } else {
+                if (req.file) {
+                    const oldImage = book.imageUrl.split('/images/')[1]
+                    fs.unlinkSync(`images/${oldImage}`)
+                }
                 Book.updateOne({ _id: req.params.id }, { ...bookObject, _id: req.params.id })
                     .then(() => res.status(200).json({ message: 'Livre modifié !' }))
-                    .catch(error => res.status(401).json({ error }));
+                    .catch(error => res.status(400).json({ error }));
             }
         })
         .catch((error) => {
@@ -90,9 +95,10 @@ exports.rateBook = (req, res, next) => {
 };
 
 
-exports.bestRating = (req, res, next) => {
-    Book.find()
-        .sort({ averageRating: - 1 }).limit(3)
-        .then((book) => res.status(200).json(book))
+
+exports.getBestRating = (req, res, next) => {
+    Book.find().sort({ averageRating: -1 }).limit(3)
+        .limit(3)
+        .then((books) => res.status(200).json(books))
         .catch((error) => res.status(404).json({ error }));
 };
